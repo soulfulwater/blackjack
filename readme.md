@@ -1,8 +1,8 @@
-###Notes
+#Notes
 
 Run with `python3 game.py`
 
-###Improvements
+#Improvements
 
 Given more time, both the `player_extra_cards_sequence()` and `dealer_extra_cards_sequence()` functions could be looked at to make these functions easier to test.
 
