@@ -4,12 +4,14 @@ import time
 
 
 class Card:
+    """Card Class"""
     def __init__(self, value, suit):
         self.value = value
         self.suit = suit
 
     @property
     def card_name(self):
+        """Returns the Name of non-number cards"""
         if self.value == 1:
             return 'Ace'
         elif self.value == 11:
@@ -22,6 +24,7 @@ class Card:
             return self.value
     @property
     def real_value(self):
+        """Returns the actual value of non-number cards"""
         if self.value == 11:
             return 10
         elif self.value == 12:
@@ -36,6 +39,7 @@ class Card:
 
 
 class Player:
+    """Player Class"""
     def __init__(self, player_name):
         self.cards = []
         self.name = player_name
@@ -50,6 +54,7 @@ class Player:
 
 
 def is_blackjack(player):
+    """Checks if a player has blackjack after initial deal"""
     ace = False
     picture = False
     card_values_list = []
@@ -71,6 +76,7 @@ def is_blackjack(player):
 
 
 def calc_score(player):
+    """Calculates the total score of a players cards"""
     cards_values_list = [card.real_value for card in player.cards]
     if 1 in cards_values_list:
         high_ace_sum = sum(cards_values_list) + 10
@@ -88,13 +94,14 @@ def set_user_status(score, player):
 
 
 def player_extra_cards_sequence(player, deck):
-    # player 1 hit/stick
+    """User stick/twist sequence"""
     while not player.stick and not player.bust:
         try:
             choice = int(input('{} - Type 0 to stick or 1 to twist:'.format(player.name)))
             if choice < 0 or choice > 1:
                 print('Not a valid option, please try again')
             elif choice == 1:
+                # twist
                 deal_card(player, deck)
                 card = player.cards[-1]
                 print(card)
@@ -105,11 +112,13 @@ def player_extra_cards_sequence(player, deck):
                     break
                 print('Your cards total {}'.format(score))
             elif choice == 0:
+                # stick
                 player.stick = True
         except ValueError:
             print('Not a valid option, please try again')
 
 def create_deck():
+    """Creates and randomises a Deck of cards"""
     suits = ['Spades', 'Diamonds', 'Hearts', 'Clubs', ]
     deck = [Card(value, suit) for value in range(1, 14) for suit in suits]
 
@@ -117,6 +126,7 @@ def create_deck():
     return deck
 
 def deal_card(player, deck):
+    """Deals a card to a player"""
     player.cards.append(deck[0])
     deck.pop(0)
 
@@ -140,6 +150,7 @@ def print_all_cards(player):
 
 
 def dealer_extra_cards_sequence(dealer, player, deck):
+    """Dealer stick/twist sequence"""
     dealer_score = calc_score(dealer)
     player_score = calc_score(player)
 
@@ -156,6 +167,7 @@ def dealer_extra_cards_sequence(dealer, player, deck):
 
 
 def calculate_winner(player, dealer):
+    """Calculates the winner of the game"""
     user_score = calc_score(player)
     dealer_score = calc_score(dealer)
     print('{} score: {}'.format(player, user_score))
